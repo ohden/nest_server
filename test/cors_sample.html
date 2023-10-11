@@ -131,10 +131,16 @@
           }
         }
 
-        const options = { method: method.value, mode: 'cors' };
+        const options = {
+          method: method.value,
+          mode: 'cors',
+          headers: {},
+        };
         if (payload_val !== '' && method.value !== 'GET') {
-          options.body = payload;
+          options.body = JSON.stringify(payload_val);
+          options.headers['Content-Type'] = 'application/json';
         }
+
         fetch(url.value, options)
           .then((res) => {
             res_status.innerText = `${res.ok ? 'OK' : 'NG'}: ${res.status}`;

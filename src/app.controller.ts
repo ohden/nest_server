@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req } from '@nestjs/common';
+import { Controller, Get, Post, Req, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { request } from 'http';
 
@@ -15,6 +15,7 @@ export class AppController {
   @Post()
   getPost(@Req() req: Request): any {
     console.log(`${new Date().toLocaleString('sv')} ${req.method}[${req.url}]`);
+    console.log(req.body);
     return { message: 'hello restjs world.' };
   }
 }
