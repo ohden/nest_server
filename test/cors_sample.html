@@ -134,25 +134,29 @@
         const options = {
           method: method.value,
           mode: 'cors',
-          headers: {},
+          Credential: 'include',
         };
         if (payload_val !== '' && method.value !== 'GET') {
           options.body = JSON.stringify(payload_val);
-          options.headers['Content-Type'] = 'application/json';
+          //          options.headers['Content-Type'] = 'application/json;charset=UTF-8';
+          options.headers = new Headers({ 'Content-Type': 'application/json;charset=UTF-8' });
         }
 
-        fetch(url.value, options)
-          .then((res) => {
-            res_status.innerText = `${res.ok ? 'OK' : 'NG'}: ${res.status}`;
-            res_header.value = JSON5.stringify(res.headers);
-            return res.text();
-          })
-          .then((data) => {
-            res_body.value = data;
-          })
-          .catch((e) => {
-            res_status.innerHTML = `${e.name}: ${e.message}`;
-          });
+        var arr = new Array(2);
+        for (let a of arr) {
+          fetch(url.value, options)
+            .then((res) => {
+              res_status.innerText = `${res.ok ? 'OK' : 'NG'}: ${res.status}`;
+              res_header.value = JSON5.stringify(res.headers);
+              return res.json();
+            })
+            .then((data) => {
+              res_body.value = JSON5.stringify(data);
+            })
+            .catch((e) => {
+              res_status.innerHTML = `${e.name}: ${e.message}`;
+            });
+        }
       };
 
       load_session_storage();
